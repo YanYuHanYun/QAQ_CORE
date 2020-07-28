@@ -1,1 +1,3 @@
-QAQ_CORE，一款支持多应用用于个人快速开发的MVC-PHP框架
+#QAQ_CORE
+欢迎使用QAQ_CORE
+> QAQ_CORE，一款用于个人开发的支持多应用的轻量级MVC-PHP框架！
