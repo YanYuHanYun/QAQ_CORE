@@ -9,4 +9,4 @@
 use QAQ\Kernel\Route;
 
 Route::get('/index', 'Index/index');
-Route::get('/^', 'Index/index');
+Route::get('/index', 'Index/index');

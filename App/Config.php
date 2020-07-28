@@ -7,12 +7,12 @@
  */
 
 //调试模式
-define('DEBUG', true);
+define('DEBUG', false);
 
 return [
     //数据库配置
-    //'database' => false,
-    'database' => include 'DataBase.php',
+    'database' => false,
+    //'database' => include 'DataBase.php',
     //多应用模式
     'multi_app' => false,
     //路由模式
