@@ -153,7 +153,7 @@ class Route
         }
         //匹配任意路由
         if ($type != 'rule') {
-            self::FindRule($url, 'rule');
+            return self::FindRule($url, 'rule');
         }
         //路由不存在
         throw new \Exception('QAQ Route Rule Not Found！', -2000);
