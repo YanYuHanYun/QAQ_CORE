@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use QAQ\Kernel\App;
-use QAQ\Kernel\Db;
 
 class Index extends App
 {
