@@ -8,5 +8,6 @@
 
 use QAQ\Kernel\Route;
 
+Route::get('/', 'Index/index');
 Route::get('/index', 'Index/index');
-Route::get('/index', 'Index/index');
+Route::get('/say/^', 'Index/index');
