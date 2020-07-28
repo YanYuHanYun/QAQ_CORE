@@ -10,7 +10,7 @@ namespace QAQ\Kernel;
 
 class App
 {
-    protected $s;
+    protected $path;
     protected $params;
     protected $module;
     protected $controller;
@@ -18,26 +18,26 @@ class App
     protected $class;
     protected $value;
 
-    public static function init($params)
+    public function __construct()
     {
-        $static = new static();
-        $static->s = $params['s'];
-        $static->params = $params['params'];
-        $static->module = $params['module'];
-        $static->controller = $params['controller'];
-        $static->action = $params['action'];
-        $static->value = $params['value'];
-        return $static;
+        $params = Route::AnalyticUrl();
+        $this->path = $params['path'];
+        $this->params = $params['params'];
+        $this->module = $params['module'];
+        $this->controller = $params['controller'];
+        $this->action = $params['action'];
+        $this->value = $params['value'];
     }
 
-    public function run()
+    public static function run()
     {
+        $static = new static();
         if (Config::get('multi_app')) {
-            return $this->FindModule();
+            return $static->FindModule();
         } else {
             //设置个module用于后续控制器查找
-            $this->module = 'App\\Controller\\';
-            return $this->FindController();
+            $static->module = 'App\\Controller\\';
+            return $static->FindController();
         }
     }
 
@@ -103,5 +103,24 @@ class App
         return call_user_func_array([
             $class, $action
         ], $this->value);
+    }
+
+    protected $_parents = [
+        'QAQ\\Kernel\\Jump',
+        'QAQ\\Kernel\\Request',
+        'QAQ\\Kernel\\View',
+    ];
+
+    public function __call($method, $args)
+    {
+        foreach ($this->_parents as $p) {
+            if (method_exists($p, $method)) {
+                return call_user_func_array([
+                    $p, $method
+                ], $args);
+            }
+        }
+        //找不到有该方法的类
+        throw new \Exception('QAQ Can Not Found A Method：' . $method);
     }
 }

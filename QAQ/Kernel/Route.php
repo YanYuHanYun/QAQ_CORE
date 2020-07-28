@@ -7,6 +7,7 @@
  */
 
 namespace QAQ\Kernel;
+
 class Route
 {
     protected static $group = false;
@@ -64,6 +65,60 @@ class Route
         $func();
         //分组路由注册完毕,清空分组
         self::$group = false;
+    }
+
+    public static function AnalyticUrl()
+    {
+        $path = Http::GetPath();
+        //路由模式
+        if (Config::get('must_route')) {
+            //注册并匹配路由
+            $url = self::register(Config::get('route_files'))->FindRule($path, Http::RequestType());
+        }
+        //开始解析
+        $params = explode('/', $url);
+        //去空
+        $params = array_filter($params);
+        //重新排列下标
+        $params = array_merge($params);
+        //默认控制器
+        if (count($params) < 1) $params[0] = Config::get('default_controller_name');
+        //默认操作
+        if (count($params) < 2) $params[1] = Config::get('default_action_name');
+        //多应用模式
+        if (Config::get('multi_app')) {
+            //默认模块
+            if (count($params) < 1) $params[0] = Config::get('default_module_name');
+            //默认控制器
+            if (count($params) < 2) $params[1] = Config::get('default_controller_name');
+            //默认操作
+            if (count($params) < 3) $params[2] = Config::get('default_action_name');
+            //设置基础请求参数
+            $module = $params[0];
+            $controller = $params[1];
+            $action = $params[2];
+            $i = 3;
+        } else {
+            //设置基础请求参数
+            $controller = $params[0];
+            $action = $params[1];
+            $i = 2;
+        }
+        //设置参数
+        $value = [];
+        while ($i < count($params)) {
+            $value[] = $params[$i];
+            $i++;
+        }
+        $params = [
+            'path' => $path,
+            'params' => $params,
+            'module' => $module ?? false,
+            'controller' => $controller,
+            'action' => $action,
+            'value' => $value
+        ];
+        return $params;
     }
 
     public function FindRule($url, $type)

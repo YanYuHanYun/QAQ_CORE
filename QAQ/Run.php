@@ -7,8 +7,9 @@
  */
 
 use QAQ\Kernel\Config;
-use QAQ\Kernel\Db;
 use QAQ\Kernel\Cache;
+use QAQ\Kernel\Db;
+use QAQ\Kernel\View;
 
 class QAQ
 {

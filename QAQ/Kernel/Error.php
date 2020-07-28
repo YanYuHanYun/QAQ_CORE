@@ -128,7 +128,7 @@ class Error
             }
             return error($error);
         } else {
-            if ($error['code'] < -1999) {
+            if (isset($error['code']) && $error['code'] < -1999) {
                 return error([
                     'code' => 404,
                     'title' => '404 Not Found',

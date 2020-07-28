@@ -7,6 +7,7 @@
  */
 
 namespace QAQ\Kernel;
+
 class Redis
 {
     protected $redis;
