@@ -146,7 +146,7 @@ class Route
                 if (preg_match($preg, $url)) {
                     $value = str_replace_once($rule, '', $url);
                     //防止value前面没有/
-                    if ($value[0] != '/') $value = '/' . $value;
+                    if (isset($value[0]) && $value[0] != '/') $value = '/' . $value;
                     return $real . $value;
                 }
             }
