@@ -94,13 +94,6 @@ if (!function_exists('jump')) {
     }
 }
 
-if (!function_exists('QAQMakeDir')) {
-    function QAQMakeDir($dir)
-    {
-        return is_dir($dir) or QAQMakeDir(dirname($dir)) and @mkdir($dir, 0777);
-    }
-}
-
 if (!function_exists('str_replace_once')) {
     function str_replace_once($needle, $replace, $haystack)
     {

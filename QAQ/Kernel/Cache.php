@@ -21,17 +21,17 @@ class Cache
     {
         $cache_dir = self::GetCacheDir();
         $file_name = $cache_dir . md5($key) . '.QAQ';
-        if (file_exists($file_name)) {
-            $serialize = file_get_contents($file_name);
+        $data = File::ReadFile($file_name);
+        if ($data) {
             //检测是否带有有效期
-            if (strpos($serialize, self::$ttl_delimiter) !== false) {
-                $tmp = explode(self::$ttl_delimiter, $serialize);
+            if (strpos($data, self::$ttl_delimiter) !== false) {
+                $tmp = explode(self::$ttl_delimiter, $data);
                 $ttl = $tmp[1];
                 //是否过期
                 if ($ttl < time()) return false;
                 $data = @unserialize($tmp[0]);
             } else {
-                $data = @unserialize($serialize);
+                $data = @unserialize($data);
             }
             if (!$data) return false;
             return $data;
@@ -42,9 +42,6 @@ class Cache
     public static function set($key, $value, $ttl = false)
     {
         $cache_dir = self::GetCacheDir();
-        if (!file_exists($cache_dir)) {
-            QAQMakeDir($cache_dir);
-        }
         $file_name = $cache_dir . md5($key) . '.QAQ';
         if ($ttl) {
             if (!is_int($ttl)) {
@@ -57,7 +54,7 @@ class Cache
         } else {
             $data = @serialize($value);
         }
-        $res = @file_put_contents($file_name, $data);
+        $res = File::MakeFile($file_name, $data);
         if ($res) return true;
         return false;
     }
@@ -66,54 +63,32 @@ class Cache
     {
         $cache_dir = self::GetCacheDir();
         $file_name = $cache_dir . md5($key) . '.QAQ';
-        return @unlink($file_name);
+        return File::RmFile($file_name);
     }
 
     public static function ClearAllCache()
     {
         $dir = self::GetCacheDir();
-        if (!file_exists($dir)) return true;
-        $dh = @opendir($dir);
-        while ($file = @readdir($dh)) {
-            if ($file != "." && $file != "..") {
-                $path = $dir . "/" . $file;
-                if (!is_dir($path)) {
-                    @unlink($path);
-                } else {
-                    self::ClearAllCache();
-                }
-            }
-        }
-        @closedir($dh);
-        if (@rmdir($dir)) {
-            return true;
-        } else {
-            return false;
-        }
+        return File::RmDir($dir);
     }
 
     public static function CheckCache()
     {
         $dir = self::GetCacheDir();
-        if (!file_exists($dir)) return true;
-        $dh = @opendir($dir);
-        while ($file = @readdir($dh)) {
-            if ($file != "." && $file != "..") {
-                $path = $dir . "/" . $file;
-                if (!is_dir($path)) {
-                    $serialize = file_get_contents($path);
-                    //检测是否带有有效期
-                    if (strpos($serialize, self::$ttl_delimiter) !== false) {
-                        $tmp = explode(self::$ttl_delimiter, $serialize);
-                        $ttl = $tmp[1];
-                        //是否过期
-                        if ($ttl < time()) {
-                            @unlink($path);
-                        }
+        $files = File::ReadDir($dir);
+        if ($files) {
+            foreach ($files as $file) {
+                $serialize = file_get_contents($file);
+                //检测是否带有有效期
+                if (strpos($serialize, self::$ttl_delimiter) !== false) {
+                    $tmp = explode(self::$ttl_delimiter, $serialize);
+                    $ttl = $tmp[1];
+                    //是否过期
+                    if ($ttl < time()) {
+                        File::RmFile($file);
                     }
                 }
             }
         }
-        @closedir($dh);
     }
 }

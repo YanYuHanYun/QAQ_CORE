@@ -43,7 +43,7 @@ class Curl
         if ($ua) {
             curl_setopt($ch, CURLOPT_USERAGENT, $ua);
         } else {
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36');
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36');
         }
         if ($nobaody) {
             curl_setopt($ch, CURLOPT_NOBODY, 1);
@@ -97,7 +97,7 @@ class Curl
             if (!empty($urls[$i]['ua'])) {
                 curl_setopt($chs[$i], CURLOPT_USERAGENT, $urls[$i]['ua']);
             } else {
-                curl_setopt($chs[$i], CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36');
+                curl_setopt($chs[$i], CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36');
             }
             if (!empty($urls[$i]['nobody'])) {
                 curl_setopt($chs[$i], CURLOPT_NOBODY, 1);

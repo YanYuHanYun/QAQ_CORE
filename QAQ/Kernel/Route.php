@@ -32,7 +32,6 @@ class Route
     public static function get($url, $action)
     {
         self::SetRule('get', $url, $action);
-
     }
 
     public static function post($url, $action)
