@@ -43,7 +43,7 @@ class File
         return @unlink($dir);
     }
 
-    public static function MakeFile($dir, $data = '', $made = FILE_APPEND)
+    public static function MakeFile($dir, $data = '', $made = FILE_USE_INCLUDE_PATH)
     {
         $dirs = explode('/', $dir);
         $dirs = array_filter($dirs);

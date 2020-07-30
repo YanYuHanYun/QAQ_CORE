@@ -22,7 +22,7 @@ class Log
     {
         self::init();
         $msg = date('Y-m-d H:i:s') . ' - [' . $level . '] - ' . $msg . PHP_EOL;
-        File::MakeFile(self::$log_name, $msg, FILE_APPEND);
+        File::MakeFile(self::$log_name, $msg, FILE_APPEND | LOCK_EX);
     }
 
     public static function Clear()
